@@ -1,109 +1,129 @@
 <template>
-    <section id="contato" ref="sectionRef" class="q-py-xl relative overflow-hidden">
+    <section id="contact" ref="sectionRef" class="contact-section py-20 relative overflow-hidden">
         <!-- Background Effects -->
-        <div class="absolute-full bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
         <div class="absolute top-1/4 right-1/3 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
         <div class="absolute bottom-1/4 left-1/4 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
 
-        <div class="container q-px-md">
-            <!-- Título -->
-            <div class="text-center q-mb-xl transition-all duration-1000"
-                :class="isVisible ? 'animate-fade-in-up' : 'opacity-0'">
-                <h2 class="text-h3 text-weight-bold q-mb-md">
+        <div class="container mx-auto px-6">
+            <!-- Header -->
+            <div :class="[
+                'text-center mb-16 transition-all duration-1000',
+                isVisible ? 'animate-fade-in-up' : 'opacity-0'
+            ]">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">
                     Vamos <span class="gradient-text">Conversar</span>
                 </h2>
-                <p class="text-subtitle1 text-grey-5 max-w-3xl q-mx-auto">
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
                     Pronto para transformar suas ideias em realidade? Entre em contato e vamos criar algo incrível
                     juntos!
                 </p>
             </div>
 
-            <div class="row q-col-gutter-xl items-start max-w-6xl q-mx-auto">
-                <!-- Formulário -->
-                <div class="col-12 col-lg-6" :class="isVisible ? 'animate-slide-in-left' : 'opacity-0'">
-                    <q-card class="q-pa-xl glass">
-                        <div class="q-mb-lg">
-                            <h3 class="text-h5 text-weight-bold gradient-text q-mb-sm">
-                                Envie uma mensagem
-                            </h3>
-                            <p class="text-grey-5">
-                                Preencha o formulário abaixo e retornarei seu contato o mais breve possível.
-                            </p>
-                        </div>
+            <div class="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Contact Form -->
+                <q-card :class="[
+                    'glass p-8 transition-all duration-1000',
+                    isVisible ? 'animate-slide-in-left' : 'opacity-0'
+                ]" flat bordered>
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold mb-4 gradient-text">Envie uma mensagem</h3>
+                        <p class="text-muted-foreground">
+                            Preencha o formulário abaixo e retornarei seu contato o mais breve possível.
+                        </p>
+                    </div>
 
-                        <q-form @submit.prevent="handleSubmit" class="q-gutter-md">
-                            <div class="row q-col-gutter-md">
-                                <div class="col-12 col-md-6">
-                                    <q-input v-model="form.name" label="Nome *" outlined dense class="glass-input"
-                                        required />
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <q-input v-model="form.email" label="Email *" type="email" outlined dense
-                                        class="glass-input" required />
-                                </div>
-                            </div>
-
-                            <q-input v-model="form.subject" label="Assunto *" outlined dense class="glass-input"
-                                required />
-                            <q-input v-model="form.message" type="textarea" label="Mensagem *" outlined dense autogrow
-                                class="glass-input" required />
-
-                            <q-btn type="submit" class="full-width bg-gradient text-white text-weight-bold glow-primary"
-                                size="lg" :loading="isSubmitting">
-                                <template v-slot:loading>
-                                    <q-spinner-hourglass size="24px" class="q-mr-sm" />
-                                    Enviando...
-                                </template>
-                                <q-icon name="send" class="q-mr-sm" />
-                                Enviar Mensagem
-                            </q-btn>
-                        </q-form>
-                    </q-card>
-                </div>
-
-                <!-- Informações de contato + redes sociais -->
-                <div class="col-12 col-lg-6 q-gutter-lg" :class="isVisible ? 'animate-slide-in-right' : 'opacity-0'">
-                    <!-- Informações -->
-                    <q-card class="q-pa-lg glass">
-                        <h3 class="text-h6 text-weight-bold gradient-text q-mb-md">Informações de Contato</h3>
-                        <div v-for="info in contactInfo" :key="info.label" class="row items-center q-mb-md">
-                            <div class="q-pa-sm bg-primary/10 rounded-borders q-mr-md">
-                                <q-icon :name="info.icon" size="24px" color="primary" />
+                    <q-form @submit="handleSubmit" class="space-y-6">
+                        <!-- Name and Email Row -->
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <q-input v-model="form.name" label="Nome *" placeholder="Seu nome completo" outlined
+                                    required class="glass-input" :rules="[val => !!val || 'Nome é obrigatório']" />
                             </div>
                             <div>
-                                <div class="text-caption text-grey-5">{{ info.label }}</div>
-                                <a v-if="info.link" :href="info.link" target="_blank"
-                                    class="text-body1 text-white hover:text-primary">
-                                    {{ info.value }}
-                                </a>
-                                <div v-else class="text-body1 text-white">{{ info.value }}</div>
+                                <q-input v-model="form.email" label="Email *" placeholder="seu@email.com" type="email"
+                                    outlined required class="glass-input" :rules="[
+                                        val => !!val || 'Email é obrigatório',
+                                        val => /.+@.+\..+/.test(val) || 'Email deve ser válido'
+                                    ]" />
+                            </div>
+                        </div>
+
+                        <!-- Subject -->
+                        <q-input v-model="form.subject" label="Assunto *" placeholder="Qual o motivo do contato?"
+                            outlined required class="glass-input" :rules="[val => !!val || 'Assunto é obrigatório']" />
+
+                        <!-- Message -->
+                        <q-input v-model="form.message" label="Mensagem *"
+                            placeholder="Descreva seu projeto ou dúvida..." type="textarea" outlined required :rows="5"
+                            class="glass-input" :rules="[val => !!val || 'Mensagem é obrigatória']" />
+
+                        <!-- Submit Button -->
+                        <q-btn type="submit" :loading="isSubmitting" loading-color="white" size="lg"
+                            class="w-full submit-btn" color="primary" text-color="white" no-caps>
+                            <template v-slot:loading>
+                                <q-spinner-hourglass class="on-left" />
+                                Enviando...
+                            </template>
+
+                            <q-icon name="send" class="on-left" />
+                            Enviar Mensagem
+                        </q-btn>
+                    </q-form>
+                </q-card>
+
+                <!-- Contact Info & Social -->
+                <div :class="[
+                    'space-y-8 transition-all duration-1000',
+                    isVisible ? 'animate-slide-in-right' : 'opacity-0'
+                ]">
+                    <!-- Contact Information -->
+                    <q-card class="glass p-8" flat bordered>
+                        <h3 class="text-2xl font-bold mb-6 gradient-text">Informações de Contato</h3>
+
+                        <div class="space-y-6">
+                            <div v-for="info in contactInfo" :key="info.label"
+                                class="flex items-center gap-4 group cursor-pointer" @click="handleContactClick(info)">
+                                <div class="p-3 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                                    <q-icon :name="info.icon" class="text-primary" size="20px" />
+                                </div>
+                                <div>
+                                    <p class="text-sm text-muted-foreground">{{ info.label }}</p>
+                                    <p class="font-medium text-foreground group-hover:text-primary transition-colors">
+                                        {{ info.value }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </q-card>
 
-                    <!-- Redes sociais -->
-                    <q-card class="q-pa-lg glass">
-                        <h3 class="text-h6 text-weight-bold gradient-text q-mb-md">Redes Sociais</h3>
-                        <div class="row q-col-gutter-md">
-                            <div v-for="social in socialLinks" :key="social.label" class="col-6">
-                                <a :href="social.url" target="_blank"
-                                    class="row items-center q-pa-sm glass hover:glow-primary transition-all">
-                                    <q-icon :name="social.icon" size="24px" class="q-mr-sm text-grey-5" />
-                                    <span class="text-body2">{{ social.label }}</span>
-                                </a>
-                            </div>
+                    <!-- Social Links -->
+                    <q-card class="glass p-8" flat bordered>
+                        <h3 class="text-2xl font-bold mb-6 gradient-text">Redes Sociais</h3>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <a v-for="social in socialLinks" :key="social.label" :href="social.url" target="_blank"
+                                rel="noopener noreferrer" :class="[
+                                    'flex items-center gap-3 p-4 rounded-lg glass hover:glow-primary transition-all duration-300 hover:-translate-y-1 group no-underline',
+                                    social.color
+                                ]">
+                                <q-icon :name="social.icon"
+                                    class="text-muted-foreground group-hover:scale-110 transition-transform"
+                                    size="24px" />
+                                <span class="font-medium text-foreground">{{ social.label }}</span>
+                            </a>
                         </div>
                     </q-card>
 
-                    <!-- Contato rápido -->
-                    <q-card class="q-pa-lg glass text-center">
-                        <q-icon name="chat" size="48px" color="primary" class="q-mb-sm" />
-                        <h3 class="text-subtitle1 text-weight-bold q-mb-sm">Precisa de uma resposta rápida?</h3>
-                        <p class="text-caption text-grey-5 q-mb-md">
+                    <!-- Quick Contact -->
+                    <q-card class="glass p-8 text-center" flat bordered>
+                        <q-icon name="chat" class="text-primary mx-auto mb-4" size="48px" />
+                        <h3 class="text-xl font-bold mb-3">Precisa de uma resposta rápida?</h3>
+                        <p class="text-muted-foreground mb-6 text-sm">
                             Entre em contato direto via WhatsApp para uma conversa mais ágil
                         </p>
-                        <q-btn outline color="primary" icon="chat" size="lg" class="glow-primary"
-                            href="https://wa.me/5511999999999" target="_blank">
+                        <q-btn size="lg" outline color="primary" class="glow-primary" no-caps @click="openWhatsApp">
+                            <q-icon name="chat" class="on-left" />
                             WhatsApp
                         </q-btn>
                     </q-card>
@@ -114,110 +134,302 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import { useQuasar } from "quasar";
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useQuasar } from 'quasar'
 
-const $q = useQuasar();
+const $q = useQuasar()
 
-const isVisible = ref(false);
-const isSubmitting = ref(false);
-const sectionRef = ref(null);
+// Reactive data
+const isVisible = ref(false)
+const isSubmitting = ref(false)
+const sectionRef = ref(null)
 
 const form = ref({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-});
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+})
 
+// Contact information
 const contactInfo = [
-    { icon: "mail", label: "Email", value: "contato@seusite.com", link: "mailto:contato@seusite.com" },
-    { icon: "phone", label: "Telefone", value: "+55 (11) 99999-9999", link: "tel:+5511999999999" },
-    { icon: "place", label: "Localização", value: "São Paulo, Brasil", link: null },
-];
+    {
+        icon: 'mail',
+        label: 'Email',
+        value: 'contato@seusite.com',
+        link: 'mailto:contato@seusite.com'
+    },
+    {
+        icon: 'phone',
+        label: 'Telefone',
+        value: '+55 (11) 99999-9999',
+        link: 'tel:+5511999999999'
+    },
+    {
+        icon: 'location_on',
+        label: 'Localização',
+        value: 'São Paulo, Brasil',
+        link: null
+    }
+]
 
+// Social links
 const socialLinks = [
-    { icon: "mdi-github", label: "GitHub", url: "https://github.com" },
-    { icon: "mdi-linkedin", label: "LinkedIn", url: "https://linkedin.com" },
-    { icon: "mdi-instagram", label: "Instagram", url: "https://instagram.com" },
-    { icon: "mdi-twitter", label: "Twitter", url: "https://twitter.com" },
-];
+    {
+        icon: 'fab fa-github',
+        label: 'GitHub',
+        url: 'https://github.com',
+        color: 'hover:text-white'
+    },
+    {
+        icon: 'fab fa-linkedin',
+        label: 'LinkedIn',
+        url: 'https://linkedin.com',
+        color: 'hover:text-blue-400'
+    },
+    {
+        icon: 'fab fa-instagram',
+        label: 'Instagram',
+        url: 'https://instagram.com',
+        color: 'hover:text-pink-400'
+    },
+    {
+        icon: 'fab fa-twitter',
+        label: 'Twitter',
+        url: 'https://twitter.com',
+        color: 'hover:text-blue-300'
+    }
+]
 
-const handleSubmit = () => {
-    isSubmitting.value = true;
-    setTimeout(() => {
-        isSubmitting.value = false;
-        $q.notify({
-            type: "positive",
-            message: "Mensagem enviada com sucesso!",
-            caption: "Retornarei seu contato em breve.",
-            position: "top",
-        });
-    }, 2000);
-};
+// Intersection Observer
+let observer = null
 
-let observer;
-onMounted(() => {
+const setupIntersectionObserver = () => {
     observer = new IntersectionObserver(
         ([entry]) => {
-            if (entry.isIntersecting) isVisible.value = true;
+            if (entry.isIntersecting) {
+                isVisible.value = true
+            }
         },
         { threshold: 0.2 }
-    );
+    )
 
-    if (sectionRef.value) observer.observe(sectionRef.value);
-});
+    if (sectionRef.value) {
+        observer.observe(sectionRef.value)
+    }
+}
 
-onBeforeUnmount(() => {
-    if (observer) observer.disconnect();
-});
+// Methods
+const handleSubmit = async () => {
+    isSubmitting.value = true
+
+    // Simulate form submission
+    setTimeout(() => {
+        isSubmitting.value = false
+
+        $q.notify({
+            type: 'positive',
+            message: 'Mensagem enviada com sucesso!',
+            caption: 'Retornarei seu contato em breve.',
+            position: 'top-right',
+            timeout: 3000
+        })
+
+        // Reset form
+        form.value = {
+            name: '',
+            email: '',
+            subject: '',
+            message: ''
+        }
+    }, 2000)
+}
+
+const handleContactClick = (info) => {
+    if (info.link) {
+        window.open(info.link, '_blank')
+    }
+}
+
+const openWhatsApp = () => {
+    window.open('https://wa.me/5511999999999', '_blank')
+}
+
+// Lifecycle
+onMounted(() => {
+    setupIntersectionObserver()
+})
+
+onUnmounted(() => {
+    if (observer) {
+        observer.disconnect()
+    }
+})
 </script>
 
 <style scoped>
-.glass {
-    backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    transition: 0.3s;
-}
 
-/* olocoodo */
-.glass:hover {
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.glass-input {
-    background: rgba(255, 255, 255, 0.03);
+/* Unificado com IndexPage.vue */
+.contact-section {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0f172a 100%);
 }
 
 .gradient-text {
-    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    background: linear-gradient(135deg, #1de9b6 0%, #8b5cf6 100%);
     -webkit-background-clip: text;
-    /* Safari, Chrome */
     background-clip: text;
-    /* Padrão (Firefox e futuros) */
     -webkit-text-fill-color: transparent;
 }
 
-.animate-fade-in-up {
-    animation: fadeInUp 1s ease forwards;
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    transition: all 0.3s ease;
 }
 
-.animate-slide-in-left {
-    animation: slideInLeft 1s ease forwards;
+.glass-input :deep(.q-field__control) {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
 }
 
-.animate-slide-in-right {
-    animation: slideInRight 1s ease forwards;
+.glass-input :deep(.q-field__control):hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
+.glass-input :deep(.q-field__outline) {
+    border-color: rgba(29, 233, 182, 0.3);
+}
+
+.glass-input :deep(.q-field--focused .q-field__outline) {
+    border-color: #1de9b6;
+    box-shadow: 0 0 10px rgba(29, 233, 182, 0.3);
+}
+
+.glass-input :deep(.q-field__label) {
+    color: #94a3b8;
+}
+
+.glass-input :deep(.q-field--focused .q-field__label) {
+    color: #1de9b6;
+}
+
+.glass-input :deep(.q-field__native) {
+    color: #f1f5f9;
+}
+
+.glass-input :deep(.q-field__native::placeholder) {
+    color: #64748b;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #1de9b6 0%, #8b5cf6 100%);
+    border-radius: 50px;
+    font-weight: 600;
+    color: #0f172a;
+    padding: 12px 32px;
+    box-shadow: 0 0 30px rgba(29, 233, 182, 0.3);
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(29, 233, 182, 0.4);
+}
+
+.glow-primary {
+    box-shadow: 0 0 20px rgba(29, 233, 182, 0.3);
+}
+
+.glow-primary:hover {
+    box-shadow: 0 0 30px rgba(29, 233, 182, 0.5);
+}
+
+.text-muted-foreground {
+    color: #94a3b8;
+}
+
+.text-foreground {
+    color: #f1f5f9;
+}
+
+.text-primary {
+    color: #1de9b6;
+}
+
+.bg-primary\/10 {
+    background-color: rgba(29, 233, 182, 0.1);
+}
+
+.bg-accent\/10 {
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+.bg-primary\/5 {
+    background-color: rgba(29, 233, 182, 0.05);
+}
+
+.bg-accent\/5 {
+    background-color: rgba(139, 92, 246, 0.05);
+}
+
+.rounded-full {
+    border-radius: 9999px;
+}
+
+.blur-3xl {
+    filter: blur(60px);
+}
+
+.w-72 {
+    width: 18rem;
+}
+
+.h-72 {
+    height: 18rem;
+}
+
+.w-48 {
+    width: 12rem;
+}
+
+.h-48 {
+    height: 12rem;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+/* Animations */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -227,9 +439,8 @@ onBeforeUnmount(() => {
 @keyframes slideInLeft {
     from {
         opacity: 0;
-        transform: translateX(-30px);
+        transform: translateX(-50px);
     }
-
     to {
         opacity: 1;
         transform: translateX(0);
@@ -239,12 +450,67 @@ onBeforeUnmount(() => {
 @keyframes slideInRight {
     from {
         opacity: 0;
-        transform: translateX(30px);
+        transform: translateX(50px);
     }
-
     to {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+.animate-fade-in-up {
+    opacity: 1;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.animate-slide-in-left {
+    opacity: 1;
+    animation: slideInLeft 1s ease forwards;
+}
+
+.animate-slide-in-right {
+    opacity: 1;
+    animation: slideInRight 1s ease forwards;
+}
+
+/* Utility Classes */
+.space-y-6>*+* {
+    margin-top: 1.5rem;
+}
+
+.space-y-8>*+* {
+    margin-top: 2rem;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.no-underline {
+    text-decoration: none;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 1rem;
+    }
+    .py-20 {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    .py-20 {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    .space-y-8>*+* {
+        margin-top: 1.5rem;
     }
 }
 </style>

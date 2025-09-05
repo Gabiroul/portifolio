@@ -158,11 +158,13 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+
+/* Unificado com sobreMim.vue */
 .services-section {
     padding: 5rem 0;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
 }
 
 /* Background Effects */
@@ -174,10 +176,10 @@ onUnmounted(() => {
 .bg-gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg,
-            rgba(29, 233, 182, 0.05) 0%,
+    background: linear-gradient(180deg,
+            rgba(139, 92, 246, 0.05) 0%,
             transparent 50%,
-            rgba(139, 92, 246, 0.1) 100%);
+            rgba(29, 233, 182, 0.05) 100%);
 }
 
 .floating-bg-accent {
@@ -238,7 +240,8 @@ onUnmounted(() => {
 /* Grid */
 .services-grid {
     display: grid;
-    gap: 2rem;
+    gap: 3rem;
+    align-items: center;
     grid-template-columns: 1fr;
     margin-bottom: 4rem;
 }
@@ -261,7 +264,7 @@ onUnmounted(() => {
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     opacity: 0;
@@ -273,8 +276,8 @@ onUnmounted(() => {
 }
 
 .service-card:hover {
-    transform: translateY(-16px);
-    box-shadow: 0 20px 40px rgba(29, 233, 182, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(29, 233, 182, 0.15);
     border-color: rgba(29, 233, 182, 0.3);
 }
 
@@ -283,26 +286,9 @@ onUnmounted(() => {
     box-shadow: 0 0 30px rgba(29, 233, 182, 0.1);
 }
 
-/* Popular Badge */
-.popular-badge {
-    position: absolute;
-    top: -12px;
-    left: 24px;
-    background: linear-gradient(135deg, #1de9b6 0%, #8b5cf6 100%);
-    color: #0f172a;
-    padding: 4px 16px;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    z-index: 10;
-}
-
 /* Service Content */
 .service-content {
-    padding: 2rem;
+    padding: 1.5rem;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -314,11 +300,9 @@ onUnmounted(() => {
 
 .icon-container {
     display: inline-flex;
-    padding: 1rem;
-    border-radius: 16px;
-    background: linear-gradient(135deg,
-            rgba(29, 233, 182, 0.1) 0%,
-            rgba(139, 92, 246, 0.1) 100%);
+    padding: 0.75rem;
+    border-radius: 12px;
+    background: rgba(29, 233, 182, 0.1);
     margin-bottom: 1rem;
     transition: transform 0.3s ease;
 }
@@ -382,9 +366,10 @@ onUnmounted(() => {
 }
 
 .service-btn:hover {
-    background: #1de9b6;
-    color: #0f172a;
+    background: rgba(29, 233, 182, 0.1);
+    color: #1de9b6;
     border-color: #1de9b6;
+    transform: translateY(-2px);
 }
 
 .btn-arrow {
@@ -443,6 +428,12 @@ onUnmounted(() => {
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+    .services-grid {
+        gap: 2rem;
+    }
+}
+
 @media (max-width: 768px) {
     .services-section {
         padding: 3rem 0;
@@ -453,11 +444,21 @@ onUnmounted(() => {
     }
 
     .services-grid {
-        gap: 1.5rem;
+        gap: 2rem;
     }
 
     .service-content {
-        padding: 1.5rem;
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .services-grid {
+        gap: 1rem;
+    }
+
+    .service-content {
+        padding: 1rem;
     }
 }
 </style>

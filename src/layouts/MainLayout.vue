@@ -1,44 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated class="bg-dark text-cyan">
-      <q-toolbar class="q-px-lg">
-        <!-- Menu button for mobile -->
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" class="q-mr-sm lt-md" />
-
-        <!-- Logo/Title -->
-        <q-toolbar-title class="text-cyan text-weight-bold">
-          Portfolio
-        </q-toolbar-title>
-
-        <!-- Navigation Menu - Desktop -->
-        <div class="row q-gutter-md gt-sm">
-          <q-btn flat no-caps class="nav-btn" :class="{ 'active': currentRoute === 'inicio' }"
-            @click="navigateTo('inicio')">
-            Início
-          </q-btn>
-          <q-btn flat no-caps class="nav-btn" :class="{ 'active': currentRoute === 'sobre' }"
-            @click="navigateTo('sobre')">
-            Sobre
-          </q-btn>
-          <q-btn flat no-caps class="nav-btn" label="Serviços" to="/#servicos">
-            
-          </q-btn>
-          <q-btn flat no-caps class="nav-btn" :class="{ 'active': currentRoute === 'projetos' }"
-            @click="navigateTo('projetos')">
-            Projetos
-          </q-btn>
-          <q-btn flat no-caps class="nav-btn" :class="{ 'active': currentRoute === 'contato' }"
-            @click="navigateTo('contato')">
-            Contato
-          </q-btn>
-        </div>
-
-        <!-- CTA Button -->
-        <q-btn outline no-caps color="cyan" class="q-ml-md cta-btn gt-md" @click="openContact">
-          Vamos Conversar
-        </q-btn>
-      </q-toolbar>
-    </q-header>
+    <slot name="header" />
 
     <!-- Mobile Drawer -->
     <q-drawer v-model="leftDrawerOpen" bordered class="bg-dark">
@@ -128,9 +90,9 @@ const currentRoute = computed(() => {
   return route.name || 'inicio'
 })
 
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
+// function toggleLeftDrawer() {
+//   leftDrawerOpen.value = !leftDrawerOpen.value
+// }
 
 function navigateTo(routeName) {
   // Fechar o drawer mobile ao navegar

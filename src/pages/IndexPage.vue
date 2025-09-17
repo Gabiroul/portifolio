@@ -4,7 +4,7 @@
     <nav class="navbar">
       <div class="nav-content">
         <div class="logo">
-          <span class="logo-text">M</span>
+          <span class="logo-text">GM</span>
         </div>
         <div class="nav-links">
           <a href="#home" class="nav-link active">Início</a>
@@ -68,7 +68,9 @@
         <div class="hero-visual">
           <div class="profile-card">
             <div class="profile-bg"></div>
-            <img src="https://i.pravatar.cc/300?img=3" alt="Martins - Desenvolvedor" class="profile-image" />
+            <img
+              src="https://lh3.googleusercontent.com/gg-dl/AJfQ9KSEcS93zsSnsK2X3sYmKUVMbYLewv7X5ebP01wWA0OO3gdssC9Qk1mEuLYDYdHBJvvTp6rhGu2c9Y6yxtn-lKqMDCRvjWUIdAJ-uiroA4C4OEaMgVZv-N9SlWnF9MmWWLlTal_omc0CIzfV8Fd0BxO4xUS3WkCdWchgMRtvieiSfD3H=s1024"
+              alt="Martins - Desenvolvedor" class="profile-image" />
             <div class="profile-info">
               <h3>Martins Silva</h3>
               <p>Full Stack Developer</p>
